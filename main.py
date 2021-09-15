@@ -2,12 +2,14 @@
 
 import datetime
 
-class trip:
-    def __init__(self, nights, enterTH, exitTH, startday):
-        self.nights = nights
-        self.enterTH = enterTH
-        self.exitTH = exitTH
-        self.startday = startday
+if __name__=='__main__':
 
-KodyTrip = trip(3, 'LTE', 'CHF', datetime.datetime.now())
-print(KodyTrip.nights, KodyTrip.enterTH, KodyTrip.exitTH, KodyTrip.startday)
+    class trip:
+        def __init__(self, nights, enterTH, exitTH, startday):
+            self.nights = nights
+            self.enterTH = enterTH
+            self.exitTH = exitTH
+            self.startday = startday
+
+    KodyTrip = trip(3, 'LTE', 'CHF', datetime.datetime.now())
+    print(KodyTrip.nights, KodyTrip.enterTH, KodyTrip.exitTH, KodyTrip.startday)
