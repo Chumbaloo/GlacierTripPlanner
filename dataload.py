@@ -15,6 +15,7 @@ if __name__=='__main__':
     cur.executescript('''
 
     DROP TABLE IF EXISTS Trails;
+    DROP TABLE IF EXISTS Campsites; 
 
     CREATE TABLE Trails (
         id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
@@ -23,6 +24,12 @@ if __name__=='__main__':
         miles   FLOAT,
         meters   FLOAT,
         calcmiles   FLOAT,
+        coordinates   TEXT
+    );
+
+   CREATE TABLE Campsites (
+        id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+        name   TEXT,
         coordinates   TEXT
 
     );
@@ -48,5 +55,11 @@ if __name__=='__main__':
 
         cur.execute('''INSERT INTO Trails (desc, subdist, miles, meters, calcmiles, coordinates)
             VALUES ( ?, ?, ?, ?, ?, ?)''', ( desc, subdist, miles, meters, calcmiles, coordinates ) )
+
+    f = open('Glacier_National_Park_Points_of_Interest.geojson')
+    gj = geojson.load(f)
+    features = gj['features']
+    print(features[0]['properties']['POINAME'])
+
 
     conn.commit()
