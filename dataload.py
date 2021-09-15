@@ -8,7 +8,6 @@ from geojson import MultiLineString
 from geojson import Feature
 
 if __name__=='__main__':
-
     conn = sqlite3.connect('glaciertrails.sqlite')
     cur = conn.cursor()
 
