@@ -11,7 +11,8 @@ if __name__=='__main__':
     conn = sqlite3.connect('glaciertrails.sqlite')
     cur = conn.cursor()
 
-    # Do some setup
+    # I should redo this using keys for subdist and type columns since
+    # they repeat
     cur.executescript('''
 
     DROP TABLE IF EXISTS Trails;
@@ -30,7 +31,8 @@ if __name__=='__main__':
    CREATE TABLE Campsites (
         id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
         name   TEXT,
-        coordinates   TEXT
+        type   TEXT,
+        location   TEXT
 
     );
 
@@ -59,7 +61,13 @@ if __name__=='__main__':
     f = open('Glacier_National_Park_Points_of_Interest.geojson')
     gj = geojson.load(f)
     features = gj['features']
-    print(features[0]['properties']['POINAME'])
+    for feature in features:
+        if feature['properties']['POITYPE'] == 'Campground' or feature['properties']['POITYPE'] == 'Trailhead':
+            name = feature['properties']['POINAME']
+            type = feature['properties']['POITYPE']
+            location = json.dumps(feature['geometry']['coordinates'])
+            cur.execute('''INSERT INTO Campsites (name, type, location)
+                VALUES ( ?, ?, ? )''', ( name, type, location ) )
 
 
     conn.commit()
