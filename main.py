@@ -19,6 +19,9 @@ if __name__=='__main__':
         else:
             if GeoAnalysis.checkconnected(t1,GeoAnalysis.gettrailcoordinates(trailname2[0])):
                 print(trailname2[0]+'\n'+trailname1)
+    
+    #Given a trailhead, find the first trail segment
+    GeoAnalysis.findstartrail('Waterton Valley')
 
     # while(True):
     #     selectnights = input('How many nights will the trip last?')
