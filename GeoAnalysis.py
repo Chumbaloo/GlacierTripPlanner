@@ -25,9 +25,13 @@ def checkconnected(trail1 : MultiLineString, trail2 : MultiLineString):
     t1coordbeg = json.loads(trail1[0][0])[0][0]
     t1coordend = json.loads(trail1[0][0])[0][len(json.loads(trail1[0][0])[0])-1]
     t2coordbeg = json.loads(trail2[0][0])[0][0]
+    t2coordend = json.loads(trail2[0][0])[0][len(json.loads(trail2[0][0])[0])-1]
     
-    if distance(t1coordbeg, t2coordbeg, units='mi') < 0.2 or distance(t1coordend, t2coordbeg, units = 'mi') < 0.2:
-        #print(distance(t1coordbeg, t2coordbeg, units='mi'), ' ', distance(t1coordend, t2coordbeg, units = 'mi'))
+    if distance(t1coordbeg, t2coordbeg, units='mi') < 0.01 or distance(t1coordend, t2coordbeg, units = 'mi') < 0.01:
+        print(distance(t1coordbeg, t2coordbeg, units='mi'), ' ', distance(t1coordend, t2coordbeg, units = 'mi'))
+        return True
+    elif distance(t1coordend, t2coordend, units='mi') < 0.01 or distance(t1coordbeg, t2coordend, units = 'mi') < 0.01:
+        print(distance(t1coordend, t2coordend, units='mi'), ' ', distance(t1coordbeg, t2coordend, units = 'mi'))
         return True
 
 def gettrailcoordinates(name):
