@@ -29,10 +29,3 @@ class trip:
             raise ValueError
         else:
             trip.enterth = enterth
-
-    def seeTHs(self):
-        conn = sqlite3.connect('glaciertrails.sqlite')
-        cur = conn.cursor()
-        cur.execute('''SELECT name FROM Campsites WHERE type = 'Trailhead' ORDER BY name ''' )
-        rows = cur.fetchall()
-        print(rows)
