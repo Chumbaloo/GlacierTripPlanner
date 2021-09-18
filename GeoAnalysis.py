@@ -52,7 +52,7 @@ def findstartrail(trailheadname: str):
             len(json.loads(gettrailcoordinates(trailname[0])[0][0])[0]) - 1
         ]
         # print(trailpoint1, trailpoint2)
-        if distance(thloc, trailpoint1, units="mi") < 0.05 or distance(thloc, trailpoint2, units="mi") < 0.05:
+        if distance(thloc, trailpoint1, units="mi") < 0.05 or distance(thloc, trailpoint2, units="mi") < 0.02:
             print(trailname, distance(thloc, trailpoint1, units="mi"), distance(thloc, trailpoint2, units="mi"))
 
 
@@ -82,90 +82,44 @@ def findstartrails(point: list):
         trailpoint1 = json.loads(gettrailcoordinates(trailname[0])[0][0])[0][0]
         trailpoint2 = json.loads(gettrailcoordinates(trailname[0])[-1][-1])[-1][-1]
         # print(trailname[0], trailpoint1, trailpoint2)
-        if distance(thloc, trailpoint1, units="mi") < 0.05 or distance(thloc, trailpoint2, units="mi") < 0.05:
+        if distance(thloc, trailpoint1, units="mi") < 0.05 or distance(thloc, trailpoint2, units="mi") < 0.02:
             trailoptions.append([trailname[0], json.loads(gettrailcoordinates(trailname[0])[0][0])[0]])
     return trailoptions
 
 
-def getroutes(start: list, end: list, proutes, routes, stopper, traveled):
-    print("******************************************")
-    routes = [[[],[]]]
-    branches = findstartrails(start)
-    index = 0
-    for trail in branches:
-        
-        print(trail[0])
-        
-        routes[index][0].append(trail[0])
-        
-        for c in trail[1]:
-            routes[index][1].append(c)
-        
-        branches2 = 1
-        
-        if distance(trail[1][0], end) < 0.05 or distance(trail[1][-1], end) < 0.05:
-            print("made it!")
-        else:
-            1
+def setstart(laststart:list,route:list):
+    if distance(laststart,route[0]) > distance(laststart,route[-1]):
+        return route[0]
+    else:
+        return route[-1]
 
-    
-
-    # # stopper = stopper + 1
-
-    # for segment in findstartrails(start):
-    #     # print(start)
-    #     for trail in findstartrails(start):
-    #         print(trail[0])
-    #     trind = 0
-    #     for s in traveled:
-    #         if s == segment[0]:
-    #             trind = 1
-    #     if trind == 1:
-    #         continue
-
-    #     traveled.append(segment[0])
-
-    #     # print(traveled)
-    #     # if stopper == 3:
-    #     #     break
-
-    #     # print('Current segment: ',segment[0], segment[-1][0], segment[-1][-1])
-    #     # print(len(proutes), segment[0],len(segment[1]))
-    #     if len(proutes) >= len(segment[1]):
-    #         # print(proutes[-len(segment[1])+1], segment)
-    #         if proutes[-len(segment[1]) + 1] == segment:
-    #             print("No Backtracking!")
-    #             continue
-
-    #     # Check that our length is still < 16 miles
-    #     if length(LineString(segment[1])) > 16:
-    #         print("Route > 16 miles.")
-    #         continue
-
-    #     # Check if we have arrived!
-    #     if distance(segment[1][0], end) < 0.05 or distance(segment[1][-1], end) < 0.05:
-    #         routes.append(proutes)
-    #         print("made it!")
-    #         # del proutes[-1]
-    #         continue
-
-    #     if distance(segment[1][0], start) < distance(segment[1][-1], start):
-    #         for item in segment[1]:
-    #             proutes.append(item)
-    #     else:
-    #         revseg = segment[1]
-    #         revseg.reverse()
-    #         for item in revseg:
-    #             proutes.append(item)
-    #     # print(proutes)
-    #     print("___________________________")
-    #     #getroutes(proutes[-1], end, proutes, routes, stopper, traveled)
-
-    # for route in routes:
-    #     #find both ends of the last trail segment in each route
-    #     p1 = route[len(route)-1][1][len(route[0])]
-    #     p2 = route[len(route)-1][1][len(route[len(route)-1][1])-1]
-
-    # whichever point is furthest from the last starting point is our new starting point
-    # for the next segment
-    # print(distance(p1,start,units='mi'))
+def getroutes(start: list, end: list):
+    queue = [start]
+    visited = []
+    visitedname = []
+    pls_stop = 0
+    while queue != []:
+        #print('Queue: ',queue)
+        print(pls_stop)
+        if pls_stop > 100:
+            break
+        s = queue.pop(0)
+        visited.append(s)
+        #print('Visited: ', visited)
+        # for x in findstartrails(s):
+        #     print(x[0])
+        for branches in findstartrails(s):
+            print(branches[0])
+            candidate = setstart(s,branches[1])
+            trigger = 0
+            for v in visited:
+                if distance(v,candidate,units='mi')<0.02 and distance(v,end,units='mi') > 0.02:
+                    trigger = 1
+            if trigger != 1:
+                if distance(candidate,end,units='mi') <= 0.02:
+                    print('Route Found!')
+                queue.append(candidate)
+                visitedname.append(branches[0])
+        pls_stop += 1
+    print(visited)
+    print(visitedname)
