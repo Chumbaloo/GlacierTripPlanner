@@ -83,7 +83,9 @@ def getroutes(start:list, end:list, proutes, routes, stopper, traveled):
     #stopper = stopper + 1
     
     for segment in findstartrails(start):
-        
+        #print(start)
+        for trail in findstartrails(start):
+            print(trail[0])
         trind = 0
         for s in traveled:
             if s == segment[0]:
@@ -97,12 +99,13 @@ def getroutes(start:list, end:list, proutes, routes, stopper, traveled):
         if stopper == 3:
             break
         
-        print('Current segment: ',segment[0], segment[-1][0], segment[-1][-1])
-        
-        # if len(proutes) >= len(segment[1]):
-        #     if proutes[-len(segment[1])+1] == segment:
-        #         print('No Backtracking!')
-        #         continue
+        #print('Current segment: ',segment[0], segment[-1][0], segment[-1][-1])
+        print(len(proutes), len(segment))
+        if len(proutes) >= len(segment[1]):
+            print(proutes[-len(segment[1])+1], segment)
+            if proutes[-len(segment[1])+1] == segment:
+                print('No Backtracking!')
+                continue
 
 
         #Check that our length is still < 16 miles
@@ -111,17 +114,22 @@ def getroutes(start:list, end:list, proutes, routes, stopper, traveled):
             continue
         
         #Check if we have arrived!
-        if distance(segment[1][0],end) < 0.05 or distance(segment[1][len(segment[1])-1],end) < 0.05:
+        if distance(segment[1][0],end) < 0.05 or distance(segment[1][-1],end) < 0.05:
             routes.append(proutes)
             print('made it!')
             #del proutes[-1]
             continue
 
-        for item in segment[1]:
-            proutes.append(item)
-        print(proutes[0],proutes[-1])
+        if distance(segment[1][0],start) < distance(segment[1][-1],start):
+            for item in segment[1]:
+                proutes.append(item)
+        else:
+            revseg = segment[1]
+            revseg.reverse()
+            for item in revseg:
+                proutes.append(item)
+        #print(proutes)
 
-        print(traveled)
         getroutes(proutes[-1],end,proutes,routes,stopper, traveled)
 
     

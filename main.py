@@ -14,7 +14,7 @@ if __name__=='__main__':
     traveled = []
     #print(GeoAnalysis.findstartrails([-113.861504, 48.85251]))
     stop = 0
-    GeoAnalysis.getroutes([-113.78081, 48.745652],[-113.861504, 48.85251], proutes, routes, stop, traveled)
+    GeoAnalysis.getroutes([-114.202083, 48.831028],[-114.120686, 48.904327], proutes, routes, stop, traveled)
 
     #GeoAnalysis.findstartrails([-113.78081, 48.745652])
 
