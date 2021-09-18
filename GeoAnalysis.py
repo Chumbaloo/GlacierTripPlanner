@@ -87,39 +87,30 @@ def findstartrails(point: list):
     return trailoptions
 
 
-def setstart(laststart:list,route:list):
-    if distance(laststart,route[0]) > distance(laststart,route[-1]):
+def setstart(laststart: list, route: list):
+    if distance(laststart, route[0]) > distance(laststart, route[-1]):
         return route[0]
     else:
         return route[-1]
 
-def getroutes(start: list, end: list):
+
+def bfs(start: list):
     queue = [start]
     visited = []
     visitedname = []
     pls_stop = 0
     while queue != []:
-        #print('Queue: ',queue)
-        print(pls_stop)
-        if pls_stop > 100:
-            break
+        print('Queue: ',queue)
         s = queue.pop(0)
         visited.append(s)
-        #print('Visited: ', visited)
-        # for x in findstartrails(s):
-        #     print(x[0])
         for branches in findstartrails(s):
-            print(branches[0])
-            candidate = setstart(s,branches[1])
+            candidate = setstart(s, branches[1])
             trigger = 0
             for v in visited:
-                if distance(v,candidate,units='mi')<0.02 and distance(v,end,units='mi') > 0.02:
+                if distance(v, candidate, units="mi") < 0.02:
                     trigger = 1
             if trigger != 1:
-                if distance(candidate,end,units='mi') <= 0.02:
-                    print('Route Found!')
                 queue.append(candidate)
                 visitedname.append(branches[0])
-        pls_stop += 1
     print(visited)
     print(visitedname)

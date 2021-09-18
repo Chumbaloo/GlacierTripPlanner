@@ -9,5 +9,4 @@ import GeoAnalysis
 
 if __name__ == "__main__":
 
-    GeoAnalysis.getroutes([-113.78081, 48.745652], [-113.861504, 48.85251])
-
+    GeoAnalysis.bfs([-113.78081, 48.745652])
