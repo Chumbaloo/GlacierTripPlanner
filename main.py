@@ -1,4 +1,4 @@
-#https://public-nps.opendata.arcgis.com/datasets/glacier-national-park-trails/explore?location=48.818230%2C-113.959516%2C10.04
+# https://public-nps.opendata.arcgis.com/datasets/glacier-national-park-trails/explore?location=48.818230%2C-113.959516%2C10.04
 
 import datetime
 import dataclasses
@@ -7,16 +7,16 @@ import json
 from Trip import trip
 import GeoAnalysis
 
-if __name__=='__main__':
+if __name__ == "__main__":
     KodyTrip = trip()
     routes = []
     proutes = []
     traveled = []
-    #print(GeoAnalysis.findstartrails([-113.861504, 48.85251]))
+    # print(GeoAnalysis.findstartrails([-113.861504, 48.85251]))
     stop = 0
-    GeoAnalysis.getroutes([-114.202083, 48.831028],[-114.120686, 48.904327], proutes, routes, stop, traveled)
+    GeoAnalysis.getroutes([-114.202083, 48.831028], [-114.120686, 48.904327], proutes, routes, stop, traveled)
 
-    #GeoAnalysis.findstartrails([-113.78081, 48.745652])
+    # GeoAnalysis.findstartrails([-113.78081, 48.745652])
 
     # #Find all trail segments that are connected to the given trail segment
     # trailname1 = 'Granite Park Chalet - Switfcurrent Pass Tr Jct'
@@ -27,7 +27,7 @@ if __name__=='__main__':
     #     else:
     #         if GeoAnalysis.checkconnected(t1,GeoAnalysis.gettrailcoordinates(trailname2[0])):
     #             print(trailname2[0]+'\n'+trailname1)
-    
+
     # #Given a trailhead, find the first trail segment
     # GeoAnalysis.findstartrail('Waterton Valley')
 
@@ -56,6 +56,5 @@ if __name__=='__main__':
     #         else:
     #             print('Please enter a valid trailhead. Enter exit to close. Enter options to see a list of valid trailheads.')
     #             continue
-
 
     # print(KodyTrip.nights, KodyTrip.enterth)
