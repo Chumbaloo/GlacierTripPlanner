@@ -89,56 +89,77 @@ def findstartrails(point: list):
 
 def getroutes(start: list, end: list, proutes, routes, stopper, traveled):
     print("******************************************")
-    # stopper = stopper + 1
-
-    for segment in findstartrails(start):
-        # print(start)
-        for trail in findstartrails(start):
-            print(trail[0])
-        trind = 0
-        for s in traveled:
-            if s == segment[0]:
-                trind = 1
-        if trind == 1:
-            continue
-
-        traveled.append(segment[0])
-
-        # print(traveled)
-        # if stopper == 3:
-        #     break
-
-        # print('Current segment: ',segment[0], segment[-1][0], segment[-1][-1])
-        # print(len(proutes), segment[0],len(segment[1]))
-        if len(proutes) >= len(segment[1]):
-            # print(proutes[-len(segment[1])+1], segment)
-            if proutes[-len(segment[1]) + 1] == segment:
-                print("No Backtracking!")
-                continue
-
-        # Check that our length is still < 16 miles
-        if length(LineString(segment[1])) > 16:
-            print("Route > 16 miles.")
-            continue
-
-        # Check if we have arrived!
-        if distance(segment[1][0], end) < 0.05 or distance(segment[1][-1], end) < 0.05:
-            routes.append(proutes)
+    routes = [[[],[]]]
+    branches = findstartrails(start)
+    index = 0
+    for trail in branches:
+        
+        print(trail[0])
+        
+        routes[index][0].append(trail[0])
+        
+        for c in trail[1]:
+            routes[index][1].append(c)
+        
+        branches2 = 1
+        
+        if distance(trail[1][0], end) < 0.05 or distance(trail[1][-1], end) < 0.05:
             print("made it!")
-            # del proutes[-1]
-            continue
-
-        if distance(segment[1][0], start) < distance(segment[1][-1], start):
-            for item in segment[1]:
-                proutes.append(item)
         else:
-            revseg = segment[1]
-            revseg.reverse()
-            for item in revseg:
-                proutes.append(item)
-        # print(proutes)
-        print("___________________________")
-        getroutes(proutes[-1], end, proutes, routes, stopper, traveled)
+            1
+
+    
+
+    # # stopper = stopper + 1
+
+    # for segment in findstartrails(start):
+    #     # print(start)
+    #     for trail in findstartrails(start):
+    #         print(trail[0])
+    #     trind = 0
+    #     for s in traveled:
+    #         if s == segment[0]:
+    #             trind = 1
+    #     if trind == 1:
+    #         continue
+
+    #     traveled.append(segment[0])
+
+    #     # print(traveled)
+    #     # if stopper == 3:
+    #     #     break
+
+    #     # print('Current segment: ',segment[0], segment[-1][0], segment[-1][-1])
+    #     # print(len(proutes), segment[0],len(segment[1]))
+    #     if len(proutes) >= len(segment[1]):
+    #         # print(proutes[-len(segment[1])+1], segment)
+    #         if proutes[-len(segment[1]) + 1] == segment:
+    #             print("No Backtracking!")
+    #             continue
+
+    #     # Check that our length is still < 16 miles
+    #     if length(LineString(segment[1])) > 16:
+    #         print("Route > 16 miles.")
+    #         continue
+
+    #     # Check if we have arrived!
+    #     if distance(segment[1][0], end) < 0.05 or distance(segment[1][-1], end) < 0.05:
+    #         routes.append(proutes)
+    #         print("made it!")
+    #         # del proutes[-1]
+    #         continue
+
+    #     if distance(segment[1][0], start) < distance(segment[1][-1], start):
+    #         for item in segment[1]:
+    #             proutes.append(item)
+    #     else:
+    #         revseg = segment[1]
+    #         revseg.reverse()
+    #         for item in revseg:
+    #             proutes.append(item)
+    #     # print(proutes)
+    #     print("___________________________")
+    #     #getroutes(proutes[-1], end, proutes, routes, stopper, traveled)
 
     # for route in routes:
     #     #find both ends of the last trail segment in each route
