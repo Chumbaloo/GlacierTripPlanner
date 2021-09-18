@@ -5,6 +5,7 @@ import json
 from turfpy.measurement import length
 from turfpy.measurement import distance
 from geojson import MultiLineString
+from geojson import LineString
 from geojson import Feature
 
 def seeTHs():
@@ -55,4 +56,81 @@ def gettrailcoordinates(name):
     cur.execute('''SELECT coordinates FROM Trails WHERE desc = ? ''' , (name,) )
     rows = cur.fetchall()
     return rows
+
+def getvaliddests(point : list):
+    conn = sqlite3.connect('glaciertrails.sqlite')
+    cur = conn.cursor()
+    cur.execute('''SELECT location, name FROM Campsites where type in ('Trailhead','Campground') ''' )
+    rows = cur.fetchall()
+    closedests = []
+    for row in rows:
+        if distance(json.loads(row[0]),point,units='mi') < 16:
+            print(row[1])
+        
+def findstartrails(point : list):
+    trailoptions = []
+    thloc = point
+    for trailname in getTrails():
+        trailpoint1 = json.loads(gettrailcoordinates(trailname[0])[0][0])[0][0]
+        trailpoint2 = json.loads(gettrailcoordinates(trailname[0])[-1][-1])[-1][-1]
+        #print(trailname[0], trailpoint1, trailpoint2)
+        if distance(thloc, trailpoint1, units = 'mi') < 0.05 or distance(thloc, trailpoint2, units = 'mi') < 0.05:
+            trailoptions.append([trailname[0],json.loads(gettrailcoordinates(trailname[0])[0][0])[0]])
+    return trailoptions
+
+def getroutes(start:list, end:list, proutes, routes, stopper, traveled):
+    
+    #stopper = stopper + 1
+    
+    for segment in findstartrails(start):
+        
+        trind = 0
+        for s in traveled:
+            if s == segment[0]:
+                trind = 1
+        if trind == 1:
+            continue
+
+        traveled.append(segment[0])
+
+        #print(traveled)
+        if stopper == 3:
+            break
+        
+        print('Current segment: ',segment[0], segment[-1][0], segment[-1][-1])
+        
+        # if len(proutes) >= len(segment[1]):
+        #     if proutes[-len(segment[1])+1] == segment:
+        #         print('No Backtracking!')
+        #         continue
+
+
+        #Check that our length is still < 16 miles
+        if length(LineString(segment[1])) > 16:
+            print('Route > 16 miles.')
+            continue
+        
+        #Check if we have arrived!
+        if distance(segment[1][0],end) < 0.05 or distance(segment[1][len(segment[1])-1],end) < 0.05:
+            routes.append(proutes)
+            print('made it!')
+            #del proutes[-1]
+            continue
+
+        for item in segment[1]:
+            proutes.append(item)
+        print(proutes[0],proutes[-1])
+
+        print(traveled)
+        getroutes(proutes[-1],end,proutes,routes,stopper, traveled)
+
+    
+    # for route in routes:
+    #     #find both ends of the last trail segment in each route
+    #     p1 = route[len(route)-1][1][len(route[0])]
+    #     p2 = route[len(route)-1][1][len(route[len(route)-1][1])-1]
+
+        #whichever point is furthest from the last starting point is our new starting point
+        #for the next segment
+        #print(distance(p1,start,units='mi'))
 
