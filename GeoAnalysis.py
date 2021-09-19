@@ -63,12 +63,14 @@ def gettrailcoordinates(name):
     rows = cur.fetchall()
     return rows
 
+
 def gettrailcoordinateslist(name):
     conn = sqlite3.connect("glaciertrails.sqlite")
     cur = conn.cursor()
     cur.execute("""SELECT coordinates FROM Trails WHERE desc = ? """, (name,))
     rows = cur.fetchall()
     return json.loads(rows[0][0])[0]
+
 
 def getvaliddests(point: list):
     conn = sqlite3.connect("glaciertrails.sqlite")
@@ -103,7 +105,7 @@ def setstart(laststart: list, route: list):
 def bfs(start: list):
     queue = [start]
     visited = []
-    #visitedname = []
+    # visitedname = []
     while queue != []:
         print("Queue: ", queue)
         s = queue.pop(0)
@@ -116,28 +118,30 @@ def bfs(start: list):
                     trigger = 1
             if trigger != 1:
                 queue.append(candidate)
-                #visitedname.append(branches[0])
-    return(visited)
+                # visitedname.append(branches[0])
+    return visited
+
 
 def bfs_routes(start: list):
     queue = []
     currentroute = []
-    priorloc=start
+    priorloc = start
     for seeds in findstartrails(start):
         queue.append(seeds[0])
-    print(queue)
+    #print(queue)
+    currentroute.append(queue[0])
     while queue != []:
-        print('Queue: ',queue)
+        print("Queue: ", queue)
         s = queue.pop(0)
-        currentroute.append(s)
-
         candidate = setstart(priorloc, gettrailcoordinateslist(s))
         for branch in findstartrails(candidate):
             if currentroute[-1] != branch[0]:
-                 print(branch[0])
+                currentroute.append(s)
+                queue.insert(0,branch[0])
+                    
+                #print(branch[0])
             # else:
             #     1
-
 
     # visited = []
     # current_path = []
