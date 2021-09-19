@@ -8,5 +8,5 @@ from Trip import trip
 import GeoAnalysis
 
 if __name__ == "__main__":
-
-    GeoAnalysis.bfs_routes([-113.78081, 48.745652])
+    #GeoAnalysis.getroutelength(['Sperry Chalets - Sperry CG','Mt Brown Tr Jct - Snyder Lake Tr Jct'])
+    GeoAnalysis.bfs_routes([-113.78081, 48.745652],[-113.799369, 48.750986])
