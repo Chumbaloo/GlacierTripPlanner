@@ -1,0 +1,10 @@
+MVP:
+    1. Have user select valid TH from list (DONE)
+    2. Provide list of valid destinations (campsite or TH, no more than 16 miles away)
+        a. get trail segment length
+        b. identify trail junctions and all possible decisions at each junction
+        c. sum up trail segment lengths to reach destination
+        d. store valid options in list
+        e. avoid backtracking
+    3. Let user select from list of valid destinations
+    4. Continue until a trailhead exit is reached

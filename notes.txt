@@ -1,0 +1,12 @@
+To find a route...
+    Give start and end points
+    Find all segments that connect to the start point
+        Check if length is <16
+            If yes, then continue
+            If no, discard
+        Check if these segments end at a campground or trailhead
+            If yes, store as possible route
+            If no, find all segments that connect to the END of the hung segment and add segments together
+            (do not allow backtracking. If no connected segments, then discard)
+                repeat steps 4 through 8 until length is >16, or it ends at a campground
+        
