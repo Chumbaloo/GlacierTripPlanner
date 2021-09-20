@@ -156,36 +156,39 @@ def bfs_routes(start: list, end: list):
     for seeds in findstartrails(start):
         queue.append(seeds[0])
     while queue != []:
-        print('-----------------Iteration Start!-----------------------')
+        print("-----------------Iteration Start!-----------------------")
         print("iteration: ", fml)
-        if fml > 10:
+        # print('Start coords: ',start)
+        # print("queue:", queue)
+        if fml > 20:
             break
-        #From the current route that is entering this iteration, have we traveled all valid paths?
-        #If so, chop off last segment of current route and reiterate
+        # From the current route that is entering this iteration, have we traveled all valid paths?
+        # If so, chop off last segment of current route and reiterate
         if currentroute != []:
             counter = 0
             repeats = 0
+            #print('Current Route: ',currentroute)
             for o in findstartrails(start):
-                counter = counter+1
-                testroute=currentroute[:]
+                counter = counter + 1
+                testroute = currentroute[:]
                 testroute.append(o[0])
-                if isrepeat(allroutes,testroute):
-                    repeats = repeats+1
-            if counter > 0 and counter==repeats+1:    
-                print('all repeat!')
+                if isrepeat(allroutes, testroute):
+                    repeats = repeats + 1
+            if counter > 0 and counter == repeats + 1:
+                print("all repeat!")
                 del currentroute[-1]
                 start = setstart(start, gettrailcoordinateslist(currentroute[-1]))
                 continue
-        
-        #Add next path in queue to the current route
-        #We do this before making any other validity checks
+
+        # Add next path in queue to the current route
+        # We do this before making any other validity checks
         s = queue.pop(0)
         currentroute.append(s)
 
         print(type(currentroute), currentroute)
-        print('queue:',queue)
+        
 
-        #add current route under review to list of all routes that have been considered
+        # add current route under review to list of all routes that have been considered
         allroutes.append(currentroute[:])
 
         if (
@@ -195,23 +198,27 @@ def bfs_routes(start: list, end: list):
             print("Arrived")
             successfulroutes.append(currentroute[:])
             del currentroute[-1]
+            start = setstart(start, gettrailcoordinateslist(currentroute[-1]))
             fml = fml + 1
             continue
 
         elif getroutelength(currentroute) > 16:
             del currentroute[-1]
+            start = setstart(start, gettrailcoordinateslist(currentroute[-1]))
             print("length!")
             fml = fml + 1
             continue
 
         elif isrepeat(allroutes[0:-1], currentroute):
             del currentroute[-1]
+            start = setstart(start, gettrailcoordinateslist(currentroute[-1]))
             print("repeat!")
             fml = fml + 1
             continue
 
         elif isdeadend(setstart(start, gettrailcoordinateslist(currentroute[-1]))):
             del currentroute[-1]
+            start = setstart(start, gettrailcoordinateslist(currentroute[-1]))
             print("dead end!")
             fml = fml + 1
             continue
@@ -222,6 +229,5 @@ def bfs_routes(start: list, end: list):
 
         start = setstart(start, gettrailcoordinateslist(s))
         fml = fml + 1
-        # print(findstartrails(setstart(start,gettrailcoordinateslist(currentroute[-1]))))
-        print('-----------------Iteration End!-----------------------')
+        print("-----------------Iteration End!-----------------------")
     print(successfulroutes)
