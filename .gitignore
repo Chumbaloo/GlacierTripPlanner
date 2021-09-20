@@ -1,2 +1,4 @@
 pgdata
 .env
+.idea/
+__pycache__
