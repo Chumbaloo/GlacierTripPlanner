@@ -147,7 +147,7 @@ def isdeadend(starting: list):
 
 
 def bfs_routes(start: list, end: list):
-
+    #iteration 12 is having problems! Look there when starting this again... it should be ident as allrepeating
     fml = 0
     successfulroutes = []
     allroutes = []
@@ -167,13 +167,17 @@ def bfs_routes(start: list, end: list):
         if currentroute != []:
             counter = 0
             repeats = 0
-            #print('Current Route: ',currentroute)
+            # print('Current Route: ',currentroute)
             for o in findstartrails(start):
+                print(o[0])
                 counter = counter + 1
                 testroute = currentroute[:]
                 testroute.append(o[0])
                 if isrepeat(allroutes, testroute):
                     repeats = repeats + 1
+            print('Repeats: ', repeats)
+            print('Counter: ', counter)
+            print(start)
             if counter > 0 and counter == repeats + 1:
                 print("all repeat!")
                 del currentroute[-1]
@@ -186,14 +190,13 @@ def bfs_routes(start: list, end: list):
         currentroute.append(s)
 
         print(type(currentroute), currentroute)
-        
 
         # add current route under review to list of all routes that have been considered
         allroutes.append(currentroute[:])
 
         if (
             distance(setstart(start, gettrailcoordinateslist(currentroute[-1])), end, units="mi") < 0.02
-            and getroutelength(currentroute) < 16
+            and getroutelength(currentroute) < 10
         ):
             print("Arrived")
             successfulroutes.append(currentroute[:])
@@ -202,7 +205,7 @@ def bfs_routes(start: list, end: list):
             fml = fml + 1
             continue
 
-        elif getroutelength(currentroute) > 16:
+        elif getroutelength(currentroute) > 10:
             del currentroute[-1]
             start = setstart(start, gettrailcoordinateslist(currentroute[-1]))
             print("length!")
